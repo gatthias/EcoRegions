@@ -18,7 +18,7 @@ Database Hosting: [Firebase](https://firebase.com)
 
 - [x] Display World Map
 - [x] Add EcoRegions Layer
-- [ ] Change map style to better view elements
+- [x] Change map style to better view elements
 - [ ] Add Biomes Layer and UI toggle
 - [x] Add interaction with map entities
 - [x] Link EcoRegions to WWF webpages
