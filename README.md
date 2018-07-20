@@ -6,7 +6,7 @@ World Map of WWF EcoRegions classification.
 
 This simple project aims to provide a better view of wild life data, showing Biomes, EcoRegions, their relative description from WWF website as well as encountered species (animal & vegetal), ground cover and related places.
 
-# Credits
+## Credits
 Map applet and satellite data: [Mapbox](https://www.mapbox.com/) 
 
 Map EcoRegions data:  WWF [Terrestrial EcoRegions of the World](https://www.worldwildlife.org/publications/terrestrial-ecoregions-of-the-world)
@@ -17,7 +17,7 @@ Text Annotation and Entities extraction: [DBpedia Spotlight](https://www.dbpedia
 
 Database Hosting: [Firebase](https://firebase.com)
 
-# Status
+## Status
 
 - [x] Display World Map
 - [x] Add EcoRegions Layer
@@ -38,5 +38,5 @@ Database Hosting: [Firebase](https://firebase.com)
 - [ ] Allow user to manually add entities directly from text selection
 - [ ] Allow entity edition
 
-# License
+## License
 MIT
