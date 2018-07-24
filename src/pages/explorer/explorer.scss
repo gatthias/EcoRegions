@@ -1,0 +1,48 @@
+﻿page-explorer {
+  .sub-tabs {
+    width: 100%;
+    background: white;
+  }
+
+  .scroll-content {
+    padding-top: 42px;
+  }
+  /* Details Style - WWF Excerpt */
+  .list-bordered {
+    border-top: 1px dotted #ccc;
+  }
+
+  ol, ul {
+    list-style: none;
+  }
+
+  .list-bordered-items > li {
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 8px;
+    padding-top: 8px;
+  }
+
+  .list-labeled .label {
+    display: block;
+    float: left;
+    text-transform: uppercase;
+    width: 185px;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  .container {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .contain:after, .row:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+  }
+}

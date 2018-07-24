@@ -1,0 +1,44 @@
+﻿<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button clear color="dark" (tap)="toggleDetails()" *ngIf="showDetails">
+        Back
+      </button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+
+    <ion-buttons end>
+      <button ion-button clear color="dark" (tap)="more()" *ngIf="showDetails">
+        More
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content [class.detail-off]="!showDetails" [class.detail-on]="showDetails">
+  <ion-list ion-fixed class="selection-ribbon" *ngIf="selectedZone">
+    <ion-item-sliding>
+      <ion-item>
+        <div class="text">
+          {{ selectedZone.name }}
+        </div>
+
+        <button ion-button clear class="btn-details" (tap)="toggleDetails()">
+          <ion-icon name="eye"></ion-icon>
+        </button>
+        
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button class="btn-close" (tap)="closeSelection($event)" color="dark">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <div id="map"></div>
+  <div id="detail">
+    <h3>{{ selectedZone?.name }}</h3>
+    <div [innerHTML]="selectedZone?.$data?.content">
+    </div>
+  </div>
+</ion-content>
