@@ -44,9 +44,9 @@
     <ion-list *ngSwitchCase="'entities'">
       <ion-item *ngFor="let entity of entities">
         <ion-label>
-          {{ entity["@surfaceForm"] }}
+          {{ entity.symbols[0] }}
           <ion-note end right>
-            <a [href]="entity['@URI']">View</a>
+            <a [href]="entity.URI">View</a>
           </ion-note>
         </ion-label>
       </ion-item>

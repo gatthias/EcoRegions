@@ -1,12 +1,14 @@
 ﻿import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the ExplorerPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AngularFireDatabase } from 'angularfire2/database';
+import { map } from 'rxjs/operators';
+
+export interface DBpediaEntity {
+    URI: string;
+    types: string[];
+    symbols: string[];
+}
 
 @IonicPage()
 @Component({
@@ -20,11 +22,13 @@ export class ExplorerPage {
 
   private fetchingEntities: boolean;
 
-  private entities: any[];
+  private entities: DBpediaEntity[];
   private partialQueries: string[];
   private partialResults: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private queriedDBpedia: boolean;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private afDB: AngularFireDatabase) {
       this.zone = navParams.get("zone");
       this.subtab = 'wwf';
 
@@ -32,10 +36,28 @@ export class ExplorerPage {
       this.entities = [];
       this.partialQueries = [];
       this.partialResults = [];
+
+      this.queriedDBpedia = false;
   }
 
   ionViewDidLoad() {
-      this.queryDBpedia();
+      // Check entities in cache
+      this.afDB.list('regions-dbpedia/'+this.zone.code).valueChanges()/*.snapshotChanges().pipe(
+          map((actions: any) =>
+              actions.map(a => ({ key: a.key, ...a.payload.val() }))
+          )
+      )*/.subscribe((items: any[]) => {
+          if (items.length == 0 && !this.queriedDBpedia)
+          {
+              this.queryDBpedia();
+              this.queriedDBpedia = true;
+              return;
+          }
+
+          this.entities = items;
+        });
+
+      
   }
 
 
@@ -75,7 +97,7 @@ export class ExplorerPage {
       var myHeaders = new Headers();
       myHeaders.append("accept", "application/json");
 
-      var myInit = {
+      var myInit: RequestInit = {
           method: 'GET',
           headers: myHeaders,
           cache: 'default'
@@ -84,9 +106,7 @@ export class ExplorerPage {
       var myRequest = new Request(url, myInit);
 
       fetch(myRequest, myInit)
-          .then(response => {
-              return response.json();
-          })
+          .then(response => response.json())
           .then(json => this.onTextPartEntitiesReceived(json));
   }
 
@@ -108,7 +128,17 @@ export class ExplorerPage {
 
       var dict = {};
 
+      var blacklist = [
+          "http://dbpedia.org/resource/WYSIWYG",
+          "http://dbpedia.org/resource/Ultralight_aviation",
+          "http://dbpedia.org/resource/Uniform_Resource_Locator",
+          "http://dbpedia.org/resource/Bad_Ems"
+      ];
+
       finalResources.map(d => {
+          if (blacklist.indexOf(d["@URI"]) > -1)
+              return;
+
           if (!dict[d["@URI"]]) {
               dict[d["@URI"]] = d;
               dict[d["@URI"]].symbols = [];
@@ -120,14 +150,23 @@ export class ExplorerPage {
 
       });
 
-      console.log(dict);
+      this.entities = Object.keys(dict).map(k => {
+          let e: DBpediaEntity = {
+              URI: dict[k]["@URI"],
+              types: dict[k]["@types"].split(','),
+              symbols: dict[k]["symbols"]
+          };
 
-      this.entities = Object.keys(dict).map(k => dict[k]);
+          return e;
+      });
+
+      // Save in FB-cache
+      let cached = {};
+      this.entities.map(e => cached[e.URI.replace("http://dbpedia.org/resource/", "").split('.').join('--')] = e);
+      this.afDB.database.ref('regions-dbpedia/' + this.zone.code).set(cached);
+
 
       this.fetchingEntities = false;
-
-      //this.destroyComponent();
-      //this.createComponentFromRaw(this.html);
   }
 
 }

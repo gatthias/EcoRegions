@@ -9,13 +9,16 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { ExplorerPageModule } from '../pages/explorer/explorer.module';
-
+import { DbpediaEntryPageModule } from '../pages/dbpedia-entry/dbpedia-entry.module';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+
+import { ComponentsModule } from '../components/components.module';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyDHHyyv-Gu2DdvcHEDo2E4yURXTU0-GdXg",
@@ -37,9 +40,12 @@ export const firebaseConfig = {
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+      HttpClientModule,
     AngularFireModule.initializeApp(firebaseConfig),
       AngularFireDatabaseModule,
-    ExplorerPageModule
+      ExplorerPageModule,
+      DbpediaEntryPageModule,
+      ComponentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -3,7 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { TaggedHtmlModule } from './tagged-html.module';
 
-import { AlertController } from 'ionic-angular';
+import { AlertController, ModalController } from 'ionic-angular';
+import { DbpediaEntryPage } from '../dbpedia-entry/dbpedia-entry';
+
 
 @Component({
   selector: 'tagged-html',
@@ -24,14 +26,7 @@ export class TaggedHtml implements OnChanges {
               private moduleRef: NgModuleRef<any>,
   ) {
       this.entities = [];
-      //this.partialQueries = [];
-      //this.partialResults = [];
   }
-
-  //ngAfterViewInit() {
-  //    if(this.html && this.html.length > 0)
-  //        this.createComponentFromRaw(this.html);
-  //}
 
   ngOnChanges(changes: SimpleChanges) {
       if (changes.entities || changes.html) {
@@ -64,60 +59,25 @@ export class TaggedHtml implements OnChanges {
       ];
 
       // Transform html
-
-      //this.entities
-      //    .filter(d => d["@types"].split(',').indexOf("DBpedia:Place") > -1 || d["@types"].split(',').indexOf("DBpedia:Animal") > -1 || d["@types"].split(',').indexOf("DBpedia:Plant") > -1)
-      //    .map(entity => {
-      //    entity.symbols.map(symbol => {
-      //        //template = template.split(symbol).join(`<tagged-keyword kw="${symbol}"></tagged-keyword>`);
-
-      //        const re = new RegExp(symbol, 'gi');
-      //        const match = template.match(re);
-
-      //        // If there's no match, just return the original value.
-      //        if (!match) {
-      //            return;
-      //        }
-
-      //        template = template.replace(re, `<tagged-keyword kw="${symbol}"></tagged-keyword>`)
-      //    })
-      //})
-
-
-      //this.entities
-      //    .filter(d => d["@types"].split(',').indexOf("DBpedia:Place") > -1 || d["@types"].split(',').indexOf("DBpedia:Animal") > -1 || d["@types"].split(',').indexOf("DBpedia:Plant") > -1)
-      //    .map(entity => {
-      //        const symbol = entity["@surfaceForm"];
-      //        const re = new RegExp(symbol, 'gi');
-      //        const match = template.match(re);
-
-      //        // If there's no match, just return the original value.
-      //        if (!match) {
-      //            return;
-      //        }
-
-      //        template = template.replace(re, `<tagged-keyword kw="${symbol}"></tagged-keyword>`)
-      //    })
       var filteredEntities = [];
       if (this.entities.length > 0) {
 
-          filteredEntities = this.entities.filter(d => d["@types"].split(',').indexOf("DBpedia:Place") > -1 || d["@types"].split(',').indexOf("DBpedia:Animal") > -1 || d["@types"].split(',').indexOf("DBpedia:Plant") > -1);
+          filteredEntities = this.entities.filter(d => d.types.indexOf("DBpedia:Place") > -1 || d.types.indexOf("DBpedia:Animal") > -1 || d.types.indexOf("DBpedia:Plant") > -1);
 
           var multiquery = filteredEntities
-            .reduce((prev, entity, i) => { prev += i > 0 ? "|" + entity["@surfaceForm"] : entity["@surfaceForm"]; return prev; }, "");
+              .reduce((prev, entity, i) => { prev += i > 0 ? "|" + entity.symbols[0] : entity.symbols[0]; return prev; }, "");
 
           var dict = {};
-          filteredEntities.map(d => dict[d["@surfaceForm"]] = d);
-
-        //const symbol = entity["@surfaceForm"];
+          filteredEntities.map(d => dict[d.symbols[0]] = d);
+          
         const re = new RegExp(multiquery, 'gi');
         const match = template.match(re);
 
-        template = template.replace(re, co => `<tagged-keyword kw="${co}" [entity]="entities['${co}']"></tagged-keyword>`)
+        template = template.replace(re, co => `<tagged-keyword kw="${co}" [entity]="entities['${co.split('\'').join('_')}']"></tagged-keyword>`)
       }
       
       var filteredEntitiesDict = {};
-      filteredEntities.map(d => filteredEntitiesDict[d["@surfaceForm"]] = d);
+      filteredEntities.map(d => filteredEntitiesDict[d.symbols[0].split('\'').join('_')] = d);
 
     // Now we create a new component. It has that template, and we can even give it data.
     const tmpCmp = Component({ template, styles })(class {
@@ -155,9 +115,6 @@ export class TaggedHtml implements OnChanges {
   destroyComponent() {
       this.vc.clear();
       if (this.cmpRef) {
-          //var idx = this.vc.indexOf(this.cmpRef.hostView);
-          //this.vc.remove(idx);
-          //debugger;
           this.cmpRef.destroy();
       }
   }
@@ -171,18 +128,16 @@ export class TaggedKeyword {
     @Input() kw: string;
     @Input() entity: any;
 
-    constructor(private alertCtrl: AlertController) {
+    constructor(private modalCtrl: ModalController) {
 
     }
 
     alert(msg) {
         console.log(this.entity);
 
-        const alert = this.alertCtrl.create({
-            title: this.kw,
-            subTitle: this.entity["@URI"],
-            buttons: ['OK']
+        const modal = this.modalCtrl.create(DbpediaEntryPage, {
+            entry: this.entity
         });
-        alert.present();
+        modal.present();
     }
 }

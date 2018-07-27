@@ -1,0 +1,18 @@
+﻿<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button clear color="dark" (tap)="close()">
+        Close
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{ entry?.symbols[0] }} | DBpedia Entity</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <dbpedia-entity-viewer [entity]="entry"></dbpedia-entity-viewer>
+</ion-content>

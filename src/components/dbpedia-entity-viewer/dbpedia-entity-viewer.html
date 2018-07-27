@@ -1,0 +1,17 @@
+﻿<div>
+  <ion-spinner *ngIf="fetching" name="crescent"></ion-spinner>
+  <div *ngIf="entry">
+    <img [src]="entry['dbo:thumbnail']" />
+    <h3>{{ entry['rdfs:label'] }}</h3>
+    <p>
+      {{ entry['dbo:abstract'] }}
+    </p>
+    <ion-list>
+      <ion-list-header>Links</ion-list-header>
+      <ion-item *ngFor="let link of entry['foaf:isPrimaryTopicOf']" (tap)="openLink(link)">
+        {{ link }}
+      </ion-item>
+    </ion-list>
+  </div>
+  
+</div>

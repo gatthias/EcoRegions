@@ -1,0 +1,142 @@
+{
+    "version": 8,
+    "name": "EcoZones",
+    "metadata": {
+        "mapbox:origin": "basic-template-v1",
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template",
+        "mapbox:sdk-support": {
+            "js": "0.45.0",
+            "android": "6.0.0",
+            "ios": "4.0.0"
+        }
+    },
+    "center": [
+        5.199621917747322,
+        45.063576295924406
+    ],
+    "zoom": 4.528944042986414,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        },
+        "composite": {
+            "url": "mapbox://gatthias.6yy30oi9,gatthias.dea0zgkt",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/gatthias/cjix2tz127yof2rno8whtftdb",
+    "glyphs": "mapbox://fonts/gatthias/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "mapbox-satellite",
+            "type": "raster",
+            "source": "mapbox://mapbox.satellite",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {}
+        },
+        {
+            "id": "ecoregions2017",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "teow-9cikvy",
+            "minzoom": 3,
+            "filter": [
+                "==",
+                "$type",
+                "Polygon"
+            ],
+            "layout": {},
+            "paint": {
+                "fill-opacity": 0.69,
+                "fill-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "get",
+                        "ECO_SYM"
+                    ],
+                    12,
+                    "hsl(151, 73%, 8%)",
+                    887,
+                    "hsl(88, 100%, 50%)"
+                ],
+                "fill-outline-color": "hsl(0, 0%, 100%)"
+            }
+        },
+        {
+            "id": "ecoregionsNames",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "Ecoregions2017",
+            "minzoom": 5,
+            "filter": [
+                "==",
+                "$type",
+                "Polygon"
+            ],
+            "layout": {
+                "visibility": "visible",
+                "text-field": [
+                    "to-string",
+                    [
+                        "get",
+                        "ECO_NAME"
+                    ]
+                ],
+                "text-size": 12
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "text-halo-blur": 0
+            }
+        },
+        {
+            "id": "Biomes",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "teow-9cikvy",
+            "minzoom": 3,
+            "filter": [
+                "==",
+                "$type",
+                "Polygon"
+            ],
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "fill-color": [
+                    "interpolate",
+                    [
+                        "linear"
+                    ],
+                    [
+                        "get",
+                        "BIOME"
+                    ],
+                    1,
+                    "hsl(0, 83%, 25%)",
+                    99,
+                    "hsl(216, 100%, 50%)"
+                ],
+                "fill-opacity": 0.69
+            }
+        }
+    ],
+    "created": "2018-06-27T12:09:01.361Z",
+    "id": "cjix2tz127yof2rno8whtftdb",
+    "modified": "2018-07-27T09:34:06.969Z",
+    "owner": "gatthias",
+    "visibility": "private",
+    "draft": false
+}

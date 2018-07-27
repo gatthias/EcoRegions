@@ -7,6 +7,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
+import * as MapStyle from '../../theme/mapstyle.json';
+
 declare var mapboxgl;
 
 interface Zone {
@@ -47,13 +49,11 @@ export class HomePage {
 
   ionViewDidLoad() {
       /** Map */
-      var style = { "version": 8, "name": "EcoZones", "metadata": { "mapbox:origin": "basic-template-v1", "mapbox:autocomposite": true, "mapbox:type": "template", "mapbox:sdk-support": { "js": "0.45.0", "android": "6.0.0", "ios": "4.0.0" } }, "center": [50.45673673905833, 40.68645011618756], "zoom": 3.2071464707588815, "bearing": 0, "pitch": 0, "sources": { "mapbox://mapbox.satellite": { "url": "mapbox://mapbox.satellite", "type": "raster", "tileSize": 256 }, "composite": { "url": "mapbox://gatthias.6yy30oi9,gatthias.dea0zgkt", "type": "vector" } }, "sprite": "mapbox://sprites/gatthias/cjix2tz127yof2rno8whtftdb", "glyphs": "mapbox://fonts/gatthias/{fontstack}/{range}.pbf", "layers": [{ "type": "raster", "paint": {}, "layout": { "visibility": "visible" }, "id": "mapbox-satellite", "source": "mapbox://mapbox.satellite" }, { "minzoom": 3, "layout": { "visibility": "visible" }, "filter": ["==", "$type", "Polygon"], "type": "fill", "source": "composite", "id": "ecoregions2017", "paint": { "fill-opacity": 0.69, "fill-color": ["interpolate", ["linear"], ["get", "ECO_SYM"], 12, "hsl(151, 73%, 8%)", 887, "hsl(88, 100%, 50%)"] }, "source-layer": "teow-9cikvy" }, { "minzoom": 5, "layout": { "visibility": "visible", "text-field": ["to-string", ["get", "ECO_NAME"]], "text-size": 12 }, "filter": ["==", "$type", "Polygon"], "type": "symbol", "source": "composite", "id": "ecoregionsNames", "paint": { "text-color": "hsl(0, 0%, 100%)", "text-halo-width": 1, "text-halo-blur": 0 }, "source-layer": "Ecoregions2017" }], "created": "2018-06-27T12:09:01.361Z", "id": "cjix2tz127yof2rno8whtftdb", "modified": "2018-07-20T14:23:23.851Z", "owner": "gatthias", "visibility": "private", "draft": false };
-
       mapboxgl.accessToken = 'pk.eyJ1IjoiZ2F0dGhpYXMiLCJhIjoiY2pjcTRsN3V2MXN3cjMzcm9kNmFmNHZ0OSJ9.TFA4I0fJKmU9Gz_HmuR6iQ';
 
       var map = new mapboxgl.Map({
           container: 'map',
-          style: style,
+          style: MapStyle, //styleUrl,//style,
           hash: true
       });
 
