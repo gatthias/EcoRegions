@@ -1,6 +1,6 @@
 # EcoRegions
 
-__Live version__ [Demo](https://opulisdynamics.github.io/EcoRegions)
+__Live version__ [Demo](https://opulisdynamics.github.io/EcoRegions/www)
 
 World Map of WWF EcoRegions classification.
 
